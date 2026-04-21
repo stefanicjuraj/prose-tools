@@ -2,7 +2,7 @@
   "name": "prose-tools",
   "displayName": "Prose Tools",
   "description": "Decorates /docs/en markdown links with validity markers in Daytona docs.",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "jurajstefanic",
   "engines": {
     "vscode": "^1.85.0"
@@ -25,6 +25,20 @@
     "package": "vsce package --no-dependencies --allow-missing-repository --skip-license"
   },
   "contributes": {
+    "commands": [
+      {
+        "command": "proseTools.pickDocLink",
+        "title": "Prose Tools: Pick /docs/en link (page and heading)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "proseTools.pickDocLink",
+        "key": "ctrl+shift+l",
+        "mac": "cmd+shift+l",
+        "when": "editorTextFocus"
+      }
+    ],
     "configuration": {
       "title": "Prose Tools",
       "properties": {
