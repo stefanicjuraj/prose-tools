@@ -1,5 +1,8 @@
 import * as vscode from "vscode";
+import { createLinkDecorationController } from "./linkDecorations";
 
-export function activate(_context: vscode.ExtensionContext): void {}
+export function activate(context: vscode.ExtensionContext): void {
+  createLinkDecorationController(context);
+}
 
 export function deactivate(): void {}

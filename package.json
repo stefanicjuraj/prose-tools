@@ -1,8 +1,8 @@
 {
-  "name": "",
-  "displayName": "",
-  "description": "",
-  "version": "0.0.0",
+  "name": "prose-tools",
+  "displayName": "Prose Tools",
+  "description": "Decorates /docs/en markdown links with validity markers in Daytona docs.",
+  "version": "0.0.1",
   "publisher": "jurajstefanic",
   "engines": {
     "vscode": "^1.85.0"
@@ -10,18 +10,38 @@
   "categories": [
     "Other"
   ],
-  "activationEvents": [],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage:markdown",
+    "onLanguage:mdx"
+  ],
   "main": "./out/extension.js",
   "scripts": {
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "clean": "node -e \"require('fs').rmSync('out',{recursive:true,force:true})\"",
+    "compile": "npm run clean && esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --format=cjs --outfile=out/extension.js --sourcemap",
+    "watch": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --format=cjs --outfile=out/extension.js --sourcemap --watch=forever",
+    "typecheck": "tsc --noEmit -p ./",
     "vscode:prepublish": "npm run compile",
     "package": "vsce package --no-dependencies --allow-missing-repository --skip-license"
+  },
+  "contributes": {
+    "configuration": {
+      "title": "Prose Tools",
+      "properties": {
+        "proseTools.docsEnRoot": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to the English docs root (the `en` folder containing .mdx pages)."
+        }
+      }
+    }
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
     "@types/vscode": "^1.85.0",
     "@vscode/vsce": "^3.2.0",
+    "esbuild": "^0.24.2",
+    "github-slugger": "^2.0.0",
     "typescript": "^5.6.0"
   }
 }
