@@ -11,7 +11,7 @@ export interface LinkCheckResult {
   detail: string;
 }
 
-function tryResolveDocFile(docsEnRoot: string, rel: string): string | null {
+export function tryResolveDocFile(docsEnRoot: string, rel: string): string | null {
   const normalized = rel.replace(/\\/g, "/").replace(/^\/+|\/+$/g, "");
   if (!normalized) {
     const indexMdx = path.join(docsEnRoot, "index.mdx");
@@ -75,6 +75,19 @@ function underDocsEnPath(pathPart: string): boolean {
 function stripQuery(p: string): string {
   const q = p.indexOf("?");
   return q === -1 ? p : p.slice(0, q);
+}
+
+/** Resolve `/docs/en/foo/bar` (no `#`) to an existing page file path, or null. */
+export function resolveDocsEnHrefToFsPath(
+  docsEnRoot: string,
+  hrefNoFragment: string,
+): string | null {
+  const pathPart = hrefNoFragment.trim();
+  if (!underDocsEnPath(pathPart)) {
+    return null;
+  }
+  const rel = pathPart.slice(DOCS_EN_PREFIX.length).replace(/^\/+/, "");
+  return tryResolveDocFile(docsEnRoot, rel);
 }
 
 export function checkMarkdownHref(

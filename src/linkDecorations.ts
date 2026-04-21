@@ -1,17 +1,8 @@
 import * as vscode from "vscode";
 import { codeFenceRanges, offsetInsideRanges } from "./codeFences";
+import { isMdLikeDocument } from "./documentKinds";
 import { findAllDocLinks } from "./markdownLinks";
 import { checkMarkdownHref, getDocsEnRoot } from "./resolveDocLink";
-
-const LANG = new Set(["markdown", "mdx"]);
-
-function isMdLikeDocument(doc: vscode.TextDocument): boolean {
-  if (LANG.has(doc.languageId)) {
-    return true;
-  }
-  const p = (doc.uri.fsPath || doc.uri.path).toLowerCase();
-  return p.endsWith(".mdx") || p.endsWith(".md") || p.endsWith(".mdc");
-}
 
 function shouldDecorateEditor(e: vscode.TextEditor): boolean {
   return isMdLikeDocument(e.document);

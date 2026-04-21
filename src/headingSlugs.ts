@@ -42,3 +42,34 @@ export function collectHeadingSlugs(source: string): { slugs: Set<string>; count
   }
   return { slugs, count };
 }
+
+export interface HeadingEntry {
+  slug: string;
+  title: string;
+}
+
+/** Ordered headings with display title and anchor slug (GitHub-style, plus `{#explicit}`). */
+export function extractHeadingEntries(source: string): HeadingEntry[] {
+  const body = stripFencedCodeBlocks(stripFrontmatter(source));
+  const slugger = new GithubSlugger();
+  const entries: HeadingEntry[] = [];
+  for (const line of body.split("\n")) {
+    const m = line.match(/^(#{1,6})\s+(.+)$/);
+    if (!m) {
+      continue;
+    }
+    let title = m[2].trim();
+    const explicit = title.match(/\{#([^}]+)\}\s*$/);
+    if (explicit) {
+      const id = explicit[1];
+      title = title.replace(/\s*\{#[^}]+\}\s*$/, "").trim();
+      if (title.length > 0) {
+        slugger.slug(title);
+      }
+      entries.push({ slug: id, title: title.length > 0 ? title : id });
+    } else if (title.length > 0) {
+      entries.push({ slug: slugger.slug(title), title });
+    }
+  }
+  return entries;
+}
