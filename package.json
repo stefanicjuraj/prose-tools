@@ -2,7 +2,7 @@
   "name": "prose-tools",
   "displayName": "Prose Tools",
   "description": "Decorates /docs/en markdown links with validity markers in Daytona docs.",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "publisher": "jurajstefanic",
   "engines": {
     "vscode": "^1.85.0"
