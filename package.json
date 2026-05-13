@@ -29,8 +29,41 @@
       {
         "command": "proseTools.pickDocLink",
         "title": "Prose Tools: Pick /docs/en link (page and heading)"
+      },
+      {
+        "command": "proseTools.openOutline",
+        "title": "Prose Tools: Show outline",
+        "icon": "$(list-unordered)"
       }
     ],
+    "menus": {
+      "editor/title": [
+        {
+          "command": "proseTools.openOutline",
+          "group": "navigation@95",
+          "when": "editorLangId == 'markdown' || editorLangId == 'mdx' || resourceExtname == '.md' || resourceExtname == '.mdx' || resourceExtname == '.mdc'"
+        }
+      ]
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "prose-tools",
+          "title": "Prose Tools",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "prose-tools": [
+        {
+          "type": "webview",
+          "id": "proseTools.tocView",
+          "name": "Outline",
+          "contextualTitle": "Document outline"
+        }
+      ]
+    },
     "keybindings": [
       {
         "command": "proseTools.pickDocLink",
